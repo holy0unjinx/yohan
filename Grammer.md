@@ -1,53 +1,62 @@
 ```EBNF
-	<program> ::= { <satement> }
+	<program> ::= { <satement> <end> | <comment> }
 
 	<end> ::= "\n"
-	<alphabet_lower> ::= "a" | "b" | "c" | ... | "x" | "y" | "z"
-	<alphabet_upper> ::= "A" | "B" | "C" | ... | "X" | "Y" | "Z"
-	<character> ::= "." | "가" | "a" | "1" | ... | "あ" | "Ā" | "啊"
-	<digit> ::= "0" | "1" | "2" | ... | "7" | "8" | "9"
+	<comma> ::= "."
+	<letter> ::= "a" | "b" | "c" | ... | "X" | "Y" | "Z"
+	<digit> ::= "0" | "1" | ... | "8" | "9"
 	<number> ::= <digit> { <digit> }
+	<character> ::= <letter> | <digit>
+	<text> ::= { <character> }
+
+	<string> ::= """ <text> """
+	<char> ::= "'" <character> "'"
+	<integer> ::= [ "-" ] { <digit> }
+	<boolean> ::= "True" | "False"
+	<list> ::= "[" <type_expression> { "," <type_expression> } "]"
+	<dictionary> ::= <identifier> ":" <type_expression> { "," <identifier> ":" <type_expression>} <comma>
 	<float> ::= <number> "." <number>
-	<alphabet> ::= <alphabet_lower> | <alphabet_upper>
-	<text> ::= <character> { <character> }
-	<identifier> ::= <alphabet> { <alphabet> | <number> | "_" }
+	<version> ::= <number>"." <number> "." <number>
 
-	<satement> ::= <comment> | <variable_declaration> | <function_declaration> | <control_structure>
+	<type_expression> ::= <string>
+											| <char>
+											| <integer>
+											| <boolean>
+											| <list>
+											| <dictionary>
+											| <float>
+											| <version>
 
-	<comment> ::= "//" <text> <end> | "/*" <text> "*/"
+	<comment> ::= "//" <text> <end>
+							| "/*" <text> "*/" <end>
+
+	<satement> ::=
 
 	<variable_declaration> ::= [ "const" ] [ "$" ] <identifier> [ <type_declaration> ] "=" <expression> <end>
-	<function_declaration> ::= [ "private" ] "func" [ <parameter_list> ] [ <type_declaration> ] <end> <body>
+	<identifier> ::= <letter> { <letter> | <digit> | "_" }
+	<type_declaration> ::= ":" <type_name>
 
-	<parameter_list> ::= <param> { <param> }
-	<param> ::= <identifier> [ <type_declaration> ]
+	<type_name> ::= ( "String" | "Str" ) |
+									( "Int" | "Integer" ) |
+									( "Char" | "Character" ) |
+									( "Bool" | "Boolean" ) |
+									"List[" <type_name> "]" |
+									( "Dictionary" | "Dict" [ "{" <type_name> "}" ] ) |
+									"Float" |
+									( "Version" | "Ver" ) |
+									"Char[" <digit> "]"
 
-	<body> ::= { <satement> <end> } <satement> "." <end>
+	<expression> ::= <type_expression>
+								| <arithmetic_expression>
+								| <boolean_expression>
+								| <identifier>
 
-	<type_declaration> ::= ":" <data_type>
+	<arithmetic_expression> ::= <term> {("+" | "-") <term>}
+	<term> ::= <factor> {("*" | "/" | "%" | "//" | "^") <factor>}
+	<factor> ::= <digit> | <identifier> | "(" <arithmetic_expression> ")"
 
-	<control_structure> ::= <if_satement> | <for_satement> | <while_satement>
+	<boolean_expression> ::= <comparison> { ("&&" | "||") <comparison> }
+	<comparison> ::= <expression> ("==" | "!=" | "<" | ">" | "<=" | ">=") <expression>
 
-	<if_satement> ::= "if" <condition> <end> <body> { "elif" <condition> <end> <body> } [ "else" <end> <body> ] | "if" <expression> <end> <case> { <case> } <default_case> <end>
-
-	<case> ::= "is" <expression> <end> <body>
-	<default_case> ::= "is not all" <end> <body>
-
-	<for_satement> ::= "for" <identifier> "in" <identifier> <end> <body> | "for" <identifier> "=" <expression> "to" <expression> "step" <expression> <end> <body>
-
-	<while_satement> ::= "while" <condition> <end> <body> | "do" <end> <body> <end> "while" <condition>
-
-	<expression> ::= <arithmetic_expression> | <boolean_expression>
-
-	<arithmetic_expression> ::= <term> { ( "+" | "-" ) <term> }
-	<term> ::= <factor> { ( "*" | "/" | "%" | "//" | "^" ) <factor> }
-	<factor> ::= <number> | <float> | <identifier> | "(" <arithmetic_expression> ")"
-
-	<boolean_expression> ::= <comparison> { ( "&&" | "||" | "and" | "or") <comparison> }
-	<comparison> ::= <expression> ( "==" | "!=" | "<" | ">" | "<=" | ">=" | "is" ) <expression> | ( "!" | "not" ) <expression>
-
-	<function_call> ::= <identifier> <argument_list>
-	<argument_list> ::= <expression> { "," <expression> }
-
-	<data_type> ::= "int" | "float" | "char" | "string" | "list" | "boolean" | "dictionary" | "tuple" | "version"
+	<function_call> ::= <identifier> { <expression> }
 ```

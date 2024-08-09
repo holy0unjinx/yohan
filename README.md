@@ -1,14 +1,12 @@
 # Yohan 0.0.1 alpha 1
 
----
+![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white)
 
-Copyright © 2024 Shin Seong-eunjin. All rights reserved.
+Copyright © 2024 신성은진. All rights reserved.
 
 Yohan is a programming language with a simple syntax, and this project implements an interpreter for the Yohan language. This interpreter provides the functionality to parse and execute source code.
 
 ### **Contents**
-
----
 
 - [Features](#features)
 - [Installation](#installation)
@@ -19,7 +17,7 @@ Yohan is a programming language with a simple syntax, and this project implement
 
 ## Features
 
-- Hmm... Nothing in NOW...
+- Hmm... Nothing in **NOW**...
 
 ## Installation
 
@@ -50,6 +48,7 @@ yohan_interpreter/
 ├── Cargo.lock               # Ensures consistent dependencies
 ├── Cargo.toml               # Cargo configuration file
 ├── Grammer.md               # Document for the grammer
+├── LICENSE                  # License
 └── README.md                # This document
 ```
 
